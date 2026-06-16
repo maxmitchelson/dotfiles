@@ -1,0 +1,93 @@
+/*
+ * wofi color scheme matching waybar, with Kanagawa Dragon accents.
+ *
+ * waybar base:
+ *   foreground          #eeeeee
+ *   foreground-inactive #aaaaaa
+ *   background          #0d0c0c
+ *
+ * Kanagawa Dragon accents:
+ *   dragonBlack3 #181616   surface
+ *   dragonBlack4 #282727   border / selection bg
+ *   dragonBlue2  #8ba4b0   selection / prompt accent
+ *   dragonAqua   #8ea4a2   matched text
+ *   dragonRed    #c4746e   close / urgency
+ *   dragonGray   #a6a69c   secondary text
+ */
+
+* {
+    font-family: Satoshi, JetBrainsMono Nerd Font;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+window {
+    background-color: transparent;
+}
+
+#outer-box {
+    margin: 0;
+    padding: 12px;
+    background-color: #0d0c0c;
+    border: 2px solid #282727;
+    border-radius: 10px;
+}
+
+#input {
+    margin-bottom: 12px;
+    padding: 8px 12px;
+    border: 1px solid #282727;
+    border-radius: 8px;
+    color: #eeeeee;
+    background-color: #181616;
+    caret-color: #8ba4b0;
+}
+
+#input:focus {
+    border: 1px solid #8ba4b0;
+}
+
+#input image {
+    color: #8ba4b0;
+}
+
+#scroll {
+    margin: 0;
+}
+
+#inner-box {
+    margin: 0;
+}
+
+#entry {
+    padding: 6px 10px;
+    border-radius: 8px;
+    color: #aaaaaa;
+}
+
+#entry image {
+    margin-right: 8px;
+}
+
+#text {
+    color: #aaaaaa;
+}
+
+#entry:selected {
+    background-color: #282727;
+}
+
+#entry:selected #text {
+    color: #eeeeee;
+}
+
+#text:selected {
+    color: #eeeeee;
+}
+
+/* fuzzy-matched substring highlight */
+#entry .highlight,
+#text .highlight {
+    color: #8ea4a2;
+    font-weight: 700;
+}
