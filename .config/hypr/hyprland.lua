@@ -42,6 +42,11 @@ hl.config({
         allow_tearing = true,            -- master switch (per-game rule below)
         gaps_in = 5,                     -- gap between windows (default 5)
         gaps_out = 12,                    -- gap to screen edges / padding (default 20)
+        border_size = 2,
+        col = {
+            active_border   = "rgba(dcd7baff)",   -- Kanagawa fujiWhite
+            inactive_border = "rgba(54546daa)",   -- Kanagawa sumiInk4, dim
+        },
     },
     cursor = {
         no_hardware_cursors = true,
@@ -138,6 +143,18 @@ hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd("playerctl play-pause"), { locked = tr
 hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioNext",  hl.dsp.exec_cmd("playerctl next"),       { locked = true })
 hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = true })
+
+-- Screenshots (grim + slurp)
+--   Print         region select -> save + clipboard
+--   CTRL + Print  region select -> clipboard only (no file)
+--   SHIFT + Print whole screen  -> save + clipboard
+-- Retheme the selection box by editing slurpFlags (colors are RRGGBBAA).
+-- Border = Kanagawa fujiWhite (#DCD7BA); bg dim = Kanagawa sumiInk1 (#1F1F28).
+local slurpFlags = "-b 1f1f2899 -c dcd7baff -w 2"   -- dim bg, white border, border width
+local saveTo     = '| tee "$(xdg-user-dir PICTURES)/Screenshots/$(date +%F_%H-%M-%S).png"'
+hl.bind("Print",         hl.dsp.exec_cmd('grim -g "$(slurp ' .. slurpFlags .. ')" - ' .. saveTo .. ' | wl-copy'))
+hl.bind("CTRL + Print",  hl.dsp.exec_cmd('grim -g "$(slurp ' .. slurpFlags .. ')" - | wl-copy'))
+hl.bind("SHIFT + Print", hl.dsp.exec_cmd('grim - ' .. saveTo .. ' | wl-copy'))
 
 -- Per-game tearing (uncomment; class from `hyprctl clients`):
 -- hl.window_rule({ name = "tear-games", match = { class = "steam_app_.*" }, immediate = true })

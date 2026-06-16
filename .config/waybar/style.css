@@ -17,7 +17,7 @@
 
 #workspaces button {
     color: @foreground;
-    padding-left: 0.7em;
+    padding: 0 0.52em 0 0.18em;
 }
 
 #workspaces button.empty {

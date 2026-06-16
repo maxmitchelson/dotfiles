@@ -1,0 +1,87 @@
+[global]
+    ### Display ###
+    monitor = 0
+    follow = mouse
+
+    ### Geometry — top right ###
+    width = 340
+    height = (0, 200)
+    origin = top-right
+    offset = (10, 10)
+    notification_limit = 5
+
+    ### Appearance ###
+    progress_bar = true
+    progress_bar_height = 8
+    progress_bar_frame_width = 0
+    progress_bar_min_width = 150
+    progress_bar_max_width = 340
+
+    indicate_hidden = yes
+    transparency = 0
+    separator_height = 2
+    padding = 12
+    horizontal_padding = 14
+    text_icon_padding = 10
+    frame_width = 1
+    frame_color = "#aaaaaa"
+    gap_size = 6
+    separator_color = frame
+    sort = yes
+    corner_radius = 8
+
+    ### Text — matches waybar (Satoshi, weight 600) ###
+    font = Satoshi 11
+    line_height = 0
+    markup = full
+    format = "<b>%s</b>\n%b"
+    alignment = left
+    vertical_alignment = center
+    show_age_threshold = 60
+    ellipsize = middle
+    ignore_newline = no
+    stack_duplicates = true
+    hide_duplicate_count = false
+    show_indicators = yes
+
+    ### Icons ###
+    enable_recursive_icon_lookup = true
+    icon_theme = "Adwaita"
+    icon_position = left
+    min_icon_size = 32
+    max_icon_size = 48
+
+    ### History ###
+    sticky_history = yes
+    history_length = 20
+
+    ### Misc ###
+    dmenu = /usr/bin/dmenu -p dunst:
+    browser = /usr/bin/xdg-open
+    always_run_script = true
+    title = Dunst
+    class = Dunst
+    ignore_dbusclose = false
+
+    ### Mouse ###
+    mouse_left_click = close_current
+    mouse_middle_click = do_action, close_current
+    mouse_right_click = close_all
+
+[urgency_low]
+    background = "#0d0c0c"
+    foreground = "#aaaaaa"
+    frame_color = "#aaaaaa"
+    timeout = 5
+
+[urgency_normal]
+    background = "#0d0c0c"
+    foreground = "#eeeeee"
+    frame_color = "#aaaaaa"
+    timeout = 8
+
+[urgency_critical]
+    background = "#0d0c0c"
+    foreground = "#eeeeee"
+    frame_color = "#eeeeee"
+    timeout = 0
