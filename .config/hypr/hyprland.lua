@@ -152,8 +152,10 @@ hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = tr
 -- Border = Kanagawa fujiWhite (#DCD7BA); bg dim = Kanagawa sumiInk1 (#1F1F28).
 local slurpFlags = "-b 1f1f2899 -c dcd7baff -w 2"   -- dim bg, white border, border width
 local saveTo     = '| tee "$(xdg-user-dir PICTURES)/Screenshots/$(date +%F_%H-%M-%S).png"'
-hl.bind("Print",         hl.dsp.exec_cmd('grim -g "$(slurp ' .. slurpFlags .. ')" - ' .. saveTo .. ' | wl-copy'))
-hl.bind("CTRL + Print",  hl.dsp.exec_cmd('grim -g "$(slurp ' .. slurpFlags .. ')" - | wl-copy'))
+-- freeze: hyprpicker -z holds a still frame so slurp selects over a frozen screen; killed after.
+local freeze = function(cmd) return 'hyprpicker -r -z & p=$!; sleep 0.15; ' .. cmd .. '; kill $p' end
+hl.bind("Print",         hl.dsp.exec_cmd(freeze('grim -g "$(slurp ' .. slurpFlags .. ')" - ' .. saveTo .. ' | wl-copy')))
+hl.bind("CTRL + Print",  hl.dsp.exec_cmd(freeze('grim -g "$(slurp ' .. slurpFlags .. ')" - | wl-copy')))
 hl.bind("SHIFT + Print", hl.dsp.exec_cmd('grim - ' .. saveTo .. ' | wl-copy'))
 
 -- Per-game tearing (uncomment; class from `hyprctl clients`):
