@@ -46,7 +46,7 @@
 
     ### Icons ###
     enable_recursive_icon_lookup = true
-    icon_theme = "Adwaita"
+    icon_theme = "Papirus-Dark, Adwaita"
     icon_position = left
     min_icon_size = 32
     max_icon_size = 48
@@ -85,3 +85,12 @@
     foreground = "#eeeeee"
     frame_color = "#eeeeee"
     timeout = 0
+
+# Volume OSD (~/.config/hypr/scripts/volume-osd.sh) — bright progress bar,
+# compact single line, scoped so normal notifications are unaffected.
+[volume_osd]
+    appname = "volume-osd"
+    highlight = "#eeeeee"
+    foreground = "#eeeeee"
+    frame_color = "#aaaaaa"
+    format = "<b>%s</b>   %b"

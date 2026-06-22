@@ -4,7 +4,7 @@
     "height": 24,
     "spacing": 5,
 
-    "modules-left": ["hyprland/workspaces", "custom/platform-profile", "temperature"],
+    "modules-left": ["hyprland/workspaces", "custom/platform-profile"],
     "modules-center": ["clock"],
     "modules-right": ["wireplumber", "battery", "hyprland/language", "idle_inhibitor", "network", "bluetooth", "tray"],
 
@@ -15,15 +15,7 @@
             "active": "\uf444",
             "default": "\uf4c3"
         },
-        "icon-size": 10,
-        "sort-by-number": true,
-        "persistent-workspaces": {
-            "1": [],
-            "2": [],
-            "3": [],
-            "4": [],
-            "5": [],
-        }
+        "sort-by-number": true
     },
 
     "clock": {
@@ -31,8 +23,9 @@
     },
 
     "wireplumber": {
-        "format": "\udb81\udd7e  {volume}%",
+        "format": "{icon}  {volume}%",
         "format-muted": "\udb81\udd81  {volume}%",
+        "format-icons": ["\udb81\udd7f", "\udb81\udd80", "\udb81\udd7e"],
         "max-volume": 100,
         "scroll-step": 5,
         "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
@@ -50,19 +43,18 @@
         "format": "\uf4bc  {used:0.1f}G"
     },
 
-    "temperature": {
-        "format": "{temperatureC}°C"
-    },
-
     "network": {
         "format": "",
         "format-ethernet": "\udb83\udc9d",
         "format-wifi": "{icon}",
         "format-disconnected": "\udb83\udc9c",
+        "format-disabled": "\udb81\uddaa",
         "format-icons": ["\udb82\udd2f", "\udb82\udd1f", "\udb82\udd22", "\udb82\udd25", "\udb82\udd28"],
         "tooltip-format-wifi": "{essid} ({signalStrength}%)",
         "tooltip-format-ethernet": "{ifname}",
         "tooltip-format-disconnected": "Disconnected",
+        "on-click": "~/.config/waybar/network_menu.sh",
+        "on-click-right": "kitty --class floating-term -e nmtui",
     },
 
     "bluetooth": {

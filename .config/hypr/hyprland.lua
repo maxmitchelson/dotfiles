@@ -88,6 +88,11 @@ hl.animation({ leaf = "workspaces", enabled = true, speed = 3, bezier = "snappy"
 -- To disable animations entirely (max snappiness / lowest latency):
 --   hl.config({ animations = { enabled = false } })
 
+--------- Persistent workspaces (always shown in waybar) ---------
+for i = 1, 5 do
+    hl.workspace_rule({ workspace = tostring(i), persistent = true })
+end
+
 ----------------- Keybinds -----------------
 -- Apps
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
@@ -135,9 +140,9 @@ hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
 -- Media keys (wpctl + playerctl)
-hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true, repeating = true })
-hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),      { locked = true, repeating = true })
-hl.bind("XF86AudioMute",        hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),     { locked = true })
+hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("~/.config/hypr/scripts/volume-osd.sh up"),   { locked = true, repeating = true })
+hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("~/.config/hypr/scripts/volume-osd.sh down"), { locked = true, repeating = true })
+hl.bind("XF86AudioMute",        hl.dsp.exec_cmd("~/.config/hypr/scripts/volume-osd.sh mute"), { locked = true })
 hl.bind("XF86AudioMicMute",     hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),   { locked = true })
 hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
@@ -152,11 +157,21 @@ hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = tr
 -- Border = Kanagawa fujiWhite (#DCD7BA); bg dim = Kanagawa sumiInk1 (#1F1F28).
 local slurpFlags = "-b 1f1f2899 -c dcd7baff -w 2"   -- dim bg, white border, border width
 local saveTo     = '| tee "$(xdg-user-dir PICTURES)/Screenshots/$(date +%F_%H-%M-%S).png"'
--- freeze: hyprpicker -z holds a still frame so slurp selects over a frozen screen; killed after.
-local freeze = function(cmd) return 'hyprpicker -r -z & p=$!; sleep 0.15; ' .. cmd .. '; kill $p' end
-hl.bind("Print",         hl.dsp.exec_cmd(freeze('grim -g "$(slurp ' .. slurpFlags .. ')" - ' .. saveTo .. ' | wl-copy')))
-hl.bind("CTRL + Print",  hl.dsp.exec_cmd(freeze('grim -g "$(slurp ' .. slurpFlags .. ')" - | wl-copy')))
+-- freeze: hyprpicker -r holds a still frame so slurp selects over a frozen screen.
+-- Kill hyprpicker BEFORE grim runs, else grim captures hyprpicker's drawn cursor
+-- in the corner where the selection ended. grim itself draws no cursor.
+local freeze = function(grimCmd) return 'hyprpicker -r -z & p=$!; sleep 0.15; g="$(slurp ' .. slurpFlags .. ')"; kill $p; ' .. grimCmd end
+hl.bind("Print",         hl.dsp.exec_cmd(freeze('grim -g "$g" - ' .. saveTo .. ' | wl-copy')))
+hl.bind("CTRL + Print",  hl.dsp.exec_cmd(freeze('grim -g "$g" - | wl-copy')))
 hl.bind("SHIFT + Print", hl.dsp.exec_cmd('grim - ' .. saveTo .. ' | wl-copy'))
+
+-- Firefox Picture-in-Picture: always float + pinned on top
+hl.window_rule({
+    name  = "firefox-pip-float",
+    match = { class = "^firefox$", title = "^Picture-in-Picture$" },
+    float = true,
+    pin   = true,
+})
 
 -- Per-game tearing (uncomment; class from `hyprctl clients`):
 -- hl.window_rule({ name = "tear-games", match = { class = "steam_app_.*" }, immediate = true })
