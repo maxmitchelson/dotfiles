@@ -54,7 +54,22 @@ while true; do
             mark=" "; [[ "$inuse" == "*" ]] && mark="*"
             lock="  "; [[ -n "$security" ]] && lock="󰌾"
             menu+=$'\n'"$(printf '%s %3s%%  %s %s' "$mark" "$signal" "$lock" "$ssid")"
-        done < <(printf '%s\n' "$list" | sort -t: -k2 -rn | uniq)
+        # Collapse multiple BSSIDs of the same SSID (2.4/5GHz, mesh nodes) into one
+        # row: keep the strongest signal, and the in-use '*' if any band is active.
+        done < <(printf '%s\n' "$list" | awk -F: '
+            {
+                inuse=$1; signal=$2; security=$3
+                ssid=$0; sub(/^[^:]*:[^:]*:[^:]*:/, "", ssid)
+                s = signal + 0
+                if (!(ssid in seen) || s > sig[ssid]) {
+                    seen[ssid]; sig[ssid] = s; sec[ssid] = security
+                }
+                if (inuse == "*") active[ssid]
+            }
+            END {
+                for (ss in seen)
+                    printf "%s:%s:%s:%s\n", (ss in active ? "*" : " "), sig[ss], sec[ss], ss
+            }' | sort -t: -k2 -rn)
     fi
 
     choice="$(printf '%s' "$menu" | wofi --width 460 --height 420 --prompt Network)" || exit 0
