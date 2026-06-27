@@ -45,9 +45,9 @@ end)
 hl.config({
     general = {
         layout = "dwindle",
-        allow_tearing = true,            -- master switch (per-game rule below)
-        gaps_in = 5,                     -- gap between windows (default 5)
-        gaps_out = 12,                    -- gap to screen edges / padding (default 20)
+        allow_tearing = true,
+        gaps_in = 5,
+        gaps_out = 12,
         border_size = 2,
         col = {
             active_border   = "rgba(dcd7baff)",   -- Kanagawa fujiWhite
@@ -76,6 +76,9 @@ hl.config({
         follow_mouse = 1,
         sensitivity = 0,
         accel_profile = "flat",          -- disable pointer acceleration
+        touchpad = {
+            natural_scroll = true,       -- content follows fingers
+        },
     },
     dwindle = {
         preserve_split = true,
@@ -83,7 +86,6 @@ hl.config({
 })
 
 --------- Snappy animations (fixes slow defaults) ---------
--- speed = deciseconds (lower = faster). Shipped example used 5-10 (slow).
 hl.curve("snappy", { type = "bezier", points = { {0.05, 0.9}, {0.1, 1.0} } })
 hl.config({ animations = { enabled = true } })
 hl.animation({ leaf = "global",     enabled = true, speed = 4, bezier = "snappy" })
@@ -111,7 +113,7 @@ hl.bind(mainMod .. " + SUPER_L", hl.dsp.exec_cmd("pkill wofi || wofi --show drun
 hl.bind(mainMod .. " + Q",         hl.dsp.window.close())          -- graceful close
 hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.window.kill())           -- force quit
 hl.bind(mainMod .. " + V",         hl.dsp.window.float({ action = "toggle" }))
-hl.bind(mainMod .. " + O",         hl.dsp.layout("togglesplit"))   -- flip orientation (needs 2+ tiled windows)
+hl.bind(mainMod .. " + O",         hl.dsp.layout("togglesplit"))   -- flip orientation
 hl.bind(mainMod .. " + P",         hl.dsp.window.pin())
 hl.bind(mainMod .. " + F",         hl.dsp.window.fullscreen({ mode = "maximized",  action = "toggle" }))
 hl.bind(mainMod .. " + SHIFT + F", hl.dsp.window.fullscreen({ mode = "fullscreen", action = "toggle" }))
