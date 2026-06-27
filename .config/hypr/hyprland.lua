@@ -8,6 +8,12 @@ local fileManager = "nautilus"
 local browser     = "firefox"
 
 ----------------- Monitors -----------------
+-- Laptop panel (left), external MSI G274QPX (right, tops aligned).
+-- eDP-1 at scale 1.0 -> effective width 1920, so external sits at x=1920.
+-- The eDP-1 rule stands alone, so the laptop works fine with the external unplugged.
+hl.monitor({ output = "eDP-1", mode = "1920x1200@59.95", position = "0x0",    scale = 1.0 })
+hl.monitor({ output = "DP-3",  mode = "2560x1440@60",    position = "1920x0", scale = 1.0 })
+-- Fallback for any other/unknown output (e.g. hotplug a new display).
 hl.monitor({ output = "", mode = "preferred", position = "auto", scale = "auto" })
 
 ------- Environment (Nvidia + gaming latency) -------
@@ -85,12 +91,10 @@ hl.animation({ leaf = "windows",    enabled = true, speed = 3, bezier = "snappy"
 hl.animation({ leaf = "fade",       enabled = true, speed = 2, bezier = "snappy" })
 hl.animation({ leaf = "border",     enabled = true, speed = 3, bezier = "snappy" })
 hl.animation({ leaf = "workspaces", enabled = true, speed = 3, bezier = "snappy", style = "slide" })
--- To disable animations entirely (max snappiness / lowest latency):
---   hl.config({ animations = { enabled = false } })
 
 --------- Persistent workspaces (always shown in waybar) ---------
 for i = 1, 5 do
-    hl.workspace_rule({ workspace = tostring(i), persistent = true })
+    hl.workspace_rule({ workspace = tostring(i), persistent = true, monitor = "DP-3", default = (i == 1) })
 end
 
 ----------------- Keybinds -----------------
